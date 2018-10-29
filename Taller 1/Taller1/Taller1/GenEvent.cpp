@@ -23,7 +23,7 @@ GenEvent::~GenEvent() {
 void GenEvent::leerEvento() {
 	ifstream arch;
 	string linea;
-	int contadorlineaDeError = 0;	//	Debuger
+	int contadorDeError = 0;	// para desplegar en cual linea del archivo ocurre un error
 
 	arch.open("Eventos.txt", ios::in);	//	Abrimos el archivo en modo lectura 
 	if (arch.fail()) {
@@ -31,7 +31,7 @@ void GenEvent::leerEvento() {
 		exit(EXIT_FAILURE);
 	}
 	
-	this->eventos = new ListaEvento(12);	// la cantidad de Eventos que vienen en el archivo es 12.
+	this->eventos = ListaEvento(11);	// la cantidad de Eventos que vienen en el archivo es 11.
 
 	while (!arch.eof()) {
 		getline(arch, linea);
@@ -64,18 +64,18 @@ void GenEvent::leerEvento() {
 				getline(is, personasEsperadas, ',');
 				getline(is, personasAsistentes, ',');
 
-				Evento *e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+				Evento e = Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
 					stoi(personasEsperadas), stoi(personasAsistentes), 5*stoi(personasEsperadas), 9*stoi(personasAsistentes));
 
-				eventos->agregarEvento(*e);
+				eventos.agregarEvento(e);
 			}
 			else {
 				getline(is, personasEsperadas, ',');
 				
-				Evento *e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+				Evento e = Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
 					stoi(personasEsperadas), 0, 5*stoi(personasEsperadas),0);
 
-				eventos->agregarEvento(*e);
+				eventos.agregarEvento(e);
 			}
 
 			break;
@@ -86,16 +86,16 @@ void GenEvent::leerEvento() {
 				getline(is, personasEsperadas, ',');
 				getline(is, personasAsistentes, ',');
 
-				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+				Evento e = Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
 					stoi(personasEsperadas), stoi(personasAsistentes), 2*stoi(personasEsperadas), 4*stoi(personasAsistentes));
-				eventos->agregarEvento(*e);
+				eventos.agregarEvento(e);
 			}
 			else {
 				getline(is, personasEsperadas, ',');
 
-				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+				Evento e = Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
 					stoi(personasEsperadas), 0, 2*stoi(personasEsperadas), 0);
-				eventos->agregarEvento(*e);
+				eventos.agregarEvento(e);
 			}
 			break;
 		case 2:		//	Deportivo
@@ -105,39 +105,130 @@ void GenEvent::leerEvento() {
 				getline(is, personasEsperadas, ',');
 				getline(is, personasAsistentes, ',');
 
-				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+				Evento e = Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
 					stoi(personasEsperadas), stoi(personasAsistentes), 8*stoi(personasEsperadas), 11*stoi(personasAsistentes));
-				eventos->agregarEvento(*e);
+				eventos.agregarEvento(e);
 			}
 			else {
 				getline(is, personasEsperadas, ',');
 
-				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+				Evento e = Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
 					stoi(personasEsperadas), 0, 8*stoi(personasEsperadas), 0);
-				eventos->agregarEvento(*e);
+				eventos.agregarEvento(e);
 			}
 			break;
 		case -1:
 			cout << "Error en el tipo del Evento.";
 			cout << "\nEn la Linea \n";  
-			cout << contadorlineaDeError << endl;
+			cout << contadorDeError << endl;
 			exit(EXIT_FAILURE);
 			break;
 
 		}
-		contadorlineaDeError++;
+		contadorDeError++;
 	}
 
 	arch.close();
 }
+
 void GenEvent::leerCliente() {
+	ifstream arch;
+	string linea;
+
+	arch.open("Clientes.txt", ios::in);
+	if (arch.fail()) {
+		cout << "No se pudo abrir el archivo 'Clientes.txt' ";
+		exit(EXIT_FAILURE);
+	}
+
+	this->clientes =  ListaCliente(6);	// la cantidad de clientes que vienen en el archivo es 6.
+
+	while (!arch.eof()) {
+		getline(arch, linea);
+
+		//datos del Cliente
+		string nombre = "";
+		string apellido = "";
+		string id = "";
+		string ciudad = "";
+		string telefono = "";
+		
+		
+		istringstream line(linea);
+		while (!line.eof()) {
+			getline(line, nombre, ';');
+			getline(line, apellido, ';');
+			getline(line, id, ';');
+			getline(line, ciudad, ';');
+			getline(line, telefono, ';');
+			
+			int c = 0;
+			string* eventos = new string[5];
+			
+			while (!line.eof()) {
+				getline(line, eventos[c], ';');
+				c++;
+			}
+			
+			Cliente	cliente =Cliente(nombre,apellido,id,ciudad,telefono,eventos);
+
+			clientes.agregarCliente(cliente);
+		}
+	}
 	
+	arch.close();
 }
+
 
 
 void GenEvent::leerAdmin() {
+	ifstream arch;
+	string linea;
 
+	arch.open("Administradores.txt", ios::in);
+	if (arch.fail()) {
+		cout << "No se pudo abrir el archivo 'Administradores.txt' ";
+		exit(EXIT_FAILURE);
+	}
+
+	this->admins = ListaAdmin(6);	// la cantidad de Administradores que vienen en el archivo es 6.
+
+	while (!arch.eof()) {
+		getline(arch, linea);
+
+		//datos del Admin
+		string nombre = "";
+		string apellido = "";
+		string id = "";
+		string ciudad = "";
+		string monto = "";
+		
+		istringstream line(linea);
+		while (!line.eof()) {
+			getline(line, nombre, ';');
+			getline(line, apellido, ';');
+			getline(line, id, ';');
+			getline(line, ciudad, ';');
+			getline(line, monto, ';');
+
+			int c = 0;
+			string* eventos = new string[5];
+
+			while (!line.eof()) {
+				getline(line, eventos[c], ';');
+				c++;
+			}
+
+			Admin	admin = Admin(nombre, apellido, id, ciudad, stoi(monto), eventos);
+
+			admins.agregarAdmin(admin);
+			
+		}
+	}
+
+	arch.close();
 }
+
 
 void GenEvent::menu() {
 	cout << "\n\n\n\n\n Bienvenid@ al sistema de administracion de la empresa GenEvent: \n\nEstas son las opciones disponibles: \n";
@@ -214,7 +305,7 @@ bool GenEvent::isNumeric(string str)
 	try {
 		int n = stoi(str);
 	}
-	catch (exception ex) {		//xd
+	catch (exception ex) {		
 		return false;
 	}
 	return true;
@@ -234,13 +325,19 @@ int GenEvent::clasificarTipo(string str)
 	}
 	return -1;
 
-
-
 }
 
-ListaEvento* GenEvent::getEventos()
+
+
+ListaEvento GenEvent::getEventos()
 {
-	return	this->eventos;
+	return	eventos;
 }
+
+ListaCliente GenEvent::getClientes()
+{
+	return	clientes;
+}
+
 
 

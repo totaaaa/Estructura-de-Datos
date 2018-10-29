@@ -20,7 +20,7 @@ ListaEvento::ListaEvento(int max)
 
 void ListaEvento::agregarEvento(Evento evento)
 {
-	if (cantActual < cantMax) {	// Si el arreglo tiene espacio se arregal un nuevo Evento.
+	if (cantActual < cantMax) {	// Si el arreglo tiene espacio se agrega un nuevo Evento.
 		this->listaEvento[cantActual] = evento;
 		this->cantActual++;	
 	}
@@ -40,10 +40,9 @@ void ListaEvento::agregarEvento(Evento evento)
 			listaEvento[i] = auxiliar[i];
 		}
 
-		delete[] auxiliar;
+		delete[] auxiliar;		// eliminamos la lista auxiliar
 
-		listaEvento[cantActual] = evento;
-
+		listaEvento[cantActual] = evento;	// por último de añade el evento desde parámetros.
 		cantActual++;
 		
 	}

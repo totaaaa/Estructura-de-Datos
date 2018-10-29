@@ -18,6 +18,12 @@ ListaCliente::ListaCliente(int max)
 	this->listaCliente = new Cliente[max];
 }
 
+void ListaCliente::agregarCliente(Cliente cliente)
+{
+	this->listaCliente[cantActual] = cliente;
+	this->cantActual++;
+}
+
 int ListaCliente::getCantActual()
 {
 	return this->cantActual;
