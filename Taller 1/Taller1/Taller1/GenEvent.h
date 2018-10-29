@@ -6,10 +6,10 @@
 class GenEvent
 {
 private:
-	ListaEvento* eventos;
-	ListaCliente* clientes;
-	ListaAdmin* admins;
-	ListaCiudad* ciudades;
+	ListaEvento *eventos;
+	ListaCliente *clientes;
+	ListaAdmin *admins;
+	ListaCiudad *ciudades;
 public:
 	GenEvent();
 	~GenEvent();

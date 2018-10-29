@@ -181,9 +181,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\Administradores.txt" />
-    <Text Include="..\..\Clientes.txt" />
-    <Text Include="..\..\Eventos.txt" />
+    <Text Include="Administradores.txt" />
+    <Text Include="Clientes.txt" />
+    <Text Include="Eventos.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

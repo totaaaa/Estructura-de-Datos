@@ -23,12 +23,15 @@ GenEvent::~GenEvent() {
 void GenEvent::leerEvento() {
 	ifstream arch;
 	string linea;
-	arch.open("Eventos.txt", ios::in);	//	Abrimos el archivo en modo lectura
+	int contadorlineaDeError = 0;	//	Debuger
+
+	arch.open("Eventos.txt", ios::in);	//	Abrimos el archivo en modo lectura 
 	if (arch.fail()) {
 		cout << "No se pudo abrir el archivo 'Eventos.txt' ";
 		exit(EXIT_FAILURE);
 	}
-	this->eventos = new ListaEvento(10);
+	
+	this->eventos = new ListaEvento(12);	// la cantidad de Eventos que vienen en el archivo es 12.
 
 	while (!arch.eof()) {
 		getline(arch, linea);
@@ -46,87 +49,94 @@ void GenEvent::leerEvento() {
 		
 		istringstream is(linea);
 
-		getline(is, nombre, ';');
-		getline(is, ciudad, ';');
-		getline(is, idCliente, ';');
-		getline(is, idAdmin, ';');
-		getline(is, id, ';');
-		getline(is, tipo, ';');
-				
+		getline(is, nombre, ',');
+		getline(is, ciudad, ',');
+		getline(is, idCliente, ',');
+		getline(is, idAdmin, ',');
+		getline(is, id, ',');
+		getline(is, tipo, ',');
+		
 		switch (clasificarTipo(tipo)) {
 		case 0:		// Social
-			getline(is, estado, ';');
+			getline(is, estado, ',');
 
 			if (estado == "Realizado") {
-				getline(is, personasEsperadas, ';');
-				getline(is, personasAsistentes, ';');
+				getline(is, personasEsperadas, ',');
+				getline(is, personasAsistentes, ',');
 
-				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
-					stoi(personasEsperadas), stoi(personasAsistentes), 5 * stoi(personasEsperadas), 9 * stoi(personasAsistentes));
+				Evento *e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+					stoi(personasEsperadas), stoi(personasAsistentes), 5*stoi(personasEsperadas), 9*stoi(personasAsistentes));
+
 				eventos->agregarEvento(*e);
 			}
 			else {
-				getline(is, personasEsperadas, ';');
+				getline(is, personasEsperadas, ',');
 				
-				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
-					stoi(personasEsperadas), stoi(personasAsistentes), 5 * stoi(personasEsperadas),0);
+				Evento *e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
+					stoi(personasEsperadas), 0, 5*stoi(personasEsperadas),0);
+
 				eventos->agregarEvento(*e);
 			}
 
 			break;
 		case 1:		//	Cultural
-			getline(is, estado, ';');
+			getline(is, estado, ',');
 
 			if (estado == "Realizado") {
-				getline(is, personasEsperadas, ';');
-				getline(is, personasAsistentes, ';');
+				getline(is, personasEsperadas, ',');
+				getline(is, personasAsistentes, ',');
 
 				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
-					stoi(personasEsperadas), stoi(personasAsistentes), 2 * stoi(personasEsperadas), 4 * stoi(personasAsistentes));
+					stoi(personasEsperadas), stoi(personasAsistentes), 2*stoi(personasEsperadas), 4*stoi(personasAsistentes));
 				eventos->agregarEvento(*e);
 			}
 			else {
-				getline(is, personasEsperadas, ';');
+				getline(is, personasEsperadas, ',');
 
 				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
-					stoi(personasEsperadas), stoi(personasAsistentes), 2 * stoi(personasEsperadas), 0);
+					stoi(personasEsperadas), 0, 2*stoi(personasEsperadas), 0);
 				eventos->agregarEvento(*e);
 			}
 			break;
 		case 2:		//	Deportivo
-			getline(is, estado, ';');
+			getline(is, estado, ',');
 
 			if (estado == "Realizado") {
-				getline(is, personasEsperadas, ';');
-				getline(is, personasAsistentes, ';');
+				getline(is, personasEsperadas, ',');
+				getline(is, personasAsistentes, ',');
 
 				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
-					stoi(personasEsperadas), stoi(personasAsistentes), 8 * stoi(personasEsperadas), 11 * stoi(personasAsistentes));
+					stoi(personasEsperadas), stoi(personasAsistentes), 8*stoi(personasEsperadas), 11*stoi(personasAsistentes));
 				eventos->agregarEvento(*e);
 			}
 			else {
-				getline(is, personasEsperadas, ';');
+				getline(is, personasEsperadas, ',');
 
 				Evento* e = new Evento(nombre, ciudad, idCliente, idAdmin, id, tipo, estado,
-					stoi(personasEsperadas), stoi(personasAsistentes), 8 * stoi(personasEsperadas), 0);
+					stoi(personasEsperadas), 0, 8*stoi(personasEsperadas), 0);
 				eventos->agregarEvento(*e);
 			}
 			break;
 		case -1:
 			cout << "Error en el tipo del Evento.";
+			cout << "\nEn la Linea \n";  
+			cout << contadorlineaDeError << endl;
 			exit(EXIT_FAILURE);
 			break;
 
 		}
+		contadorlineaDeError++;
 	}
 
+	arch.close();
 }
 void GenEvent::leerCliente() {
-
+	
 }
 
 
 void GenEvent::leerAdmin() {
+
 }
 
 void GenEvent::menu() {
@@ -173,7 +183,7 @@ void GenEvent::menu() {
 		generarDespedidos();
 
 		cout << "\n Muchas gracias, vuelva pronto n.n \n";
-		 (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 
 	}// no hay default porque la validación no admite errores.
 
@@ -228,7 +238,7 @@ int GenEvent::clasificarTipo(string str)
 
 }
 
-ListaEvento * GenEvent::getEventos()
+ListaEvento* GenEvent::getEventos()
 {
 	return	this->eventos;
 }

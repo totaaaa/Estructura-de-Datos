@@ -82,13 +82,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\Eventos.txt">
+    <Text Include="Administradores.txt">
       <Filter>Archivos de origen</Filter>
     </Text>
-    <Text Include="..\..\Clientes.txt">
+    <Text Include="Clientes.txt">
       <Filter>Archivos de origen</Filter>
     </Text>
-    <Text Include="..\..\Administradores.txt">
+    <Text Include="Eventos.txt">
       <Filter>Archivos de origen</Filter>
     </Text>
   </ItemGroup>

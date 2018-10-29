@@ -28,7 +28,7 @@ int ListaCiudad::getCantMax()
 	return this->cantMax;
 }
 
-Ciudad * ListaCiudad::getLista()
+Ciudad* ListaCiudad::getLista()
 {
 	return this->listaCiudad;
 }
