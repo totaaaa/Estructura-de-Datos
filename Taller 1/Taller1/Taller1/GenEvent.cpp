@@ -264,8 +264,8 @@ void GenEvent::menu() {
 	case 2:
 		administrarEvento();
 		break;
-	case 3:
-		buscar();
+	case 3:	
+		buscar();			
 		break;
 	case 4:
 		cout << "\n Actualizando datos...\n";
@@ -276,7 +276,7 @@ void GenEvent::menu() {
 		cout << "\n Muchas gracias, vuelva pronto n.n \n";
 		exit(EXIT_SUCCESS);
 
-	}// no hay default porque la validación no admite errores.
+	}// no hay default porque la validaciÃ³n no admite errores.
 
 }
 
@@ -289,7 +289,23 @@ void GenEvent::administrarEvento() {
 }
 
 void GenEvent::buscar() {
-
+		cout << "Buscar: \n";
+		cout << "1) Eventos por tipo\n\n";	
+		cout << "2) Clientes por ciudad\n\n";
+		cout << "3) Administradores\n\n";
+		cout << "4) Volver\n\n";	
+		
+		string strOpcion;
+		getline(cin,strOpcion);
+			
+		int opcion;
+		while (!isNumeric(strOpcion) || (stoi(strOpcion)!=1 &&  stoi(strOpcion) != 2 &&	stoi(strOpcion) != 3 && stoi(strOpcion) != 4 )){
+			cout << "\n Ha ocurrido un error, intente de nuevo: \n";
+			getline(cin, strOpcion);
+		}
+		opcion = stoi(strOpcion);
+		
+		
 }
 
 void GenEvent::actualizarDatos() {
